@@ -15,12 +15,13 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 
 	TArray<FAuraAttributeInfo> AttributeInformation = AttributeInfo->GetAttributeInfo();
 
-	for (FAuraAttributeInfo Attribute : AttributeInformation)
+	for (auto& Pair : AS->TagsToAttributes)
 	{
+		FAuraAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(Pair.Key);
+		Info.AttributeValue = Pair.Value().GetNumericValue(AS);
+		AttributeInfoDelegate.Broadcast(Info);
 
-		AttributeInfoDelegate.Broadcast(Attribute);
 	}
-
 	//FAuraAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(FAuraGameplayTags::Get().Attributes_Primary_Strength);
 	//Info.AttributeValue = AS->GetStrength();
 
